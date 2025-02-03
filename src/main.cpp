@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
 
     glm::vec3 Camera_pos = { 1.0f, 0.25f, 1.0f };
-    Camera Main_view(Camera_pos, 45, 0.06, 0.1, 0.1f, 300.0f);
+    Camera Main_view(Camera_pos, 45, 0.01, 0.1, 0.1f, 300.0f);
     Main_view.set_viewrange(Shader_rec, WIDTH_WIN, HIGHT_WIN);
     screen.swap_mouse(WIDTH_WIN / 2, HIGHT_WIN / 2);
 
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
                             glm::vec3(0.005, 0.005, 0.005), 8);
         
     Light light{
-        glm::vec3(1, 1, 1),
+        glm::vec3(0.1, 0.1, 0.1),
         glm::vec3(1, 1, 1),
         glm::vec3(0.1, 0.1, 0.1),
         20.0f, 18.0f
@@ -44,33 +44,8 @@ int main(int argc, char* argv[]) {
 
     float Angle_rotate[] = {0,0,0};
 
-    // glm::vec3 Block_positions[] = {
-    //     glm::vec3(0, 0, 0),
-    //     glm::vec3(5, 3, 4),
-    //     glm::vec3(-3, 2, 1),
-    //     glm::vec3(-2, -1, -2),
-    //     glm::vec3(5, 4, -3)
-    // };
-
-    // Block test;
-    // test.Create_block(face_create_key, 
-    //                   glm::vec3(0.5, 1, 0.3), 
-    //                   normal_face_vector, 
-    //                   Texture_coord_face, 
-    //                   glm::vec3(0,0,0), 1, 1, 1);
-
-    // std::unordered_map<glm::ivec3, int> Maze = {{glm::ivec3(0,0,0),  1}, 
-    //                                             {glm::ivec3(-5,0,8), 1},
-    //                                             {glm::ivec3(-1,0,0), 1},
-    //                                             {glm::ivec3(-6,0,8), 1},
-    //                                             {glm::ivec3(-5,0,7), 1},
-    //                                             {glm::ivec3(-16,0,-16),1},
-    //                                             {glm::ivec3(-17,0,-16),1},
-    //                                             {glm::ivec3(-16,0,-17),1},
-    //                                             {glm::ivec3(-15,0,-16),1},
-    //                                             {glm::ivec3(-16,0,-15),1},};
     
-    Maze_map Maze = {50,50,glm::ivec3(1,0,1), glm::ivec3(49,0,48)};
+    Maze_map Maze = {50,50,glm::ivec3(20,0,1), glm::ivec3(49,0,48)};
     Maze.reneration_map_matrix();
     Map maze_map(Maze.Map);
 

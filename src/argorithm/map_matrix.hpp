@@ -19,9 +19,12 @@ struct Maze_map{
     
     std::unordered_map<glm::ivec3, int> Map;
     std::vector<glm::ivec3> Direct = {glm::ivec3(1,0,0), glm::ivec3(-1,0,0), glm::ivec3(0,0,-1), glm::ivec3(0,0,1)};
+    std::vector<glm::ivec3> CrossDirect = {glm::ivec3(1,0,1), glm::ivec3(-1,0,1), glm::ivec3(1,0,-1), glm::ivec3(-1,0,-1)};
+    
     bool Is_have_main_way = false;
 
     int Is_next_to_aVoid(glm::ivec3 pos, glm::ivec3 before_pos);
+    bool Is_next_to_block(glm::ivec3 pos_block, glm::ivec3 pos_check);
     std::vector<glm::ivec3> random_way(std::vector<glm::ivec3> way, glm::ivec3 pos);
 
     void reneration_map_matrix();

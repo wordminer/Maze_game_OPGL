@@ -36,8 +36,8 @@ void set_material_uniform(ShaderProgram shader, Material info_material){
     }
 
     shader.uniformFloat("material.Contant", 1);
-    shader.uniformFloat("material.linear", 0.14);
-    shader.uniformFloat("material.quadratic", 0.007);
+    shader.uniformFloat("material.linear", 0.1);
+    shader.uniformFloat("material.quadratic", 0.07);
 }
 
 void set_light_uniform(ShaderProgram shader, Light light_info, glm::vec3 Light_pos, glm::vec3 Look_vec){

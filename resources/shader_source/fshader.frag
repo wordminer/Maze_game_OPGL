@@ -77,11 +77,11 @@ void main()
     float reflect_check = dot(reflect_vec, norm);
     float negative_check = max(reflect_check, 0) / reflect_check;
     float specular = pow(max(dot(reflect_vec, normalize(camera_vec)) * negative_check, 0), material.shininess);
-    vec3 specular_vec = specular * specular_texture * light.specular ;
+    vec3 specular_vec = specular * (specular_texture * light.specular);
 
     
 
-    vec3 ourColor = (ambient + difuse );
+    vec3 ourColor = (ambient + difuse)*intensity*attenuation ;
 
     FragColor = vec4(ourColor, 1.0);
 }

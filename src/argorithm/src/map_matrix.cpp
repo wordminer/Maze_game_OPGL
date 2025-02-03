@@ -28,10 +28,25 @@ int Maze_map::Is_next_to_aVoid(glm::ivec3 pos, glm::ivec3 before_pos){
         if (direct_pos == this->end_point){return -1;}
         if (this->Map.find(direct_pos) == this->Map.end()){return 1;}
     }
+
+    for (auto direct:this->CrossDirect){
+        glm::ivec3 direct_pos = pos + direct;
+        if (this->Is_next_to_block(before_pos, direct_pos)){continue;}
+        if (this->Map.find(direct_pos) == this->Map.end()){return 1;}
+    }
     // std::cout<<pos.x <<" "<<pos.y <<" "<<pos.z <<" "<<std::endl;
         
     return 0;
 }
+
+bool Maze_map::Is_next_to_block(glm::ivec3 pos_block, glm::ivec3 pos_check){
+    for (auto direct:this->Direct){
+        glm::ivec3 direct_pos = pos_check + direct;
+        if (direct_pos == pos_block){return true;}
+    }
+    return false;
+}
+
 void Maze_map::reneration_map_matrix(){
     // crate a base map
     for (int x = 0; x < this->width_map; x++){
