@@ -38,14 +38,3 @@ void Graphic_data::AttribPointer(GLuint index_ptr, GLint size, GLenum type_ptr, 
 	glEnableVertexAttribArray(index_ptr);
 }
 
-void buffer_data(std::vector<Vertex> Vertices, Graphic_data& GP){
-    GP.Buffer_array_data(Vertices.data(), (GLsizeiptr)(Vertices.size() * sizeof(Vertex)), GL_STATIC_DRAW);
-    // std::cout<< Vertices[0].m_pos.x << std::endl;
-    // std::cout<< Vertices[0].m_pos.y << std::endl;
-    // std::cout<< Vertices[0].m_pos.z << std::endl;
-    GP.AttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), (void *)getOffsetOfPos());
-    GP.AttribPointer(1, 3, GL_FLOAT, false, sizeof(Vertex), (void *)getOffsetOfColor());
-    GP.AttribPointer(2, 3, GL_FLOAT, false, sizeof(Vertex), (void *)getOffsetOfNormal());
-    GP.AttribPointer(3, 2, GL_FLOAT, false, sizeof(Vertex), (void *)getOffsetOfTexCoord());
-    GP.AttribPointer(4, 2, GL_FLOAT, false, sizeof(Vertex), (void *)getOffsetOfFaceID());
-}

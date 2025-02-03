@@ -22,7 +22,7 @@ set(DEP_FILE dependences/src/stb/stb.cpp)
 
 file(GLOB ARGORITHM_SOURCE CONFIGURE_DEPENDS "src/argorithm/src/*.cpp")
 file(GLOB HANDLE_GRAPHIC_SOURCE CONFIGURE_DEPENDS "src/handle_graphic/src/*.cpp")
-file(GLOB VOLTEX_SOURCE CONFIGURE_DEPENDS "src/voltex/src/*.cpp")
+file(GLOB VOLTEX_SOURCE CONFIGURE_DEPENDS "src/votex/src/*.cpp")
 file(GLOB UTIL_SOURCE CONFIGURE_DEPENDS "src/util/src/*.cpp")
 #file(GLOB CUBE_SOURCE CONFIGURE_DEPENDS "cube/src/*.cpp")
 list (APPEND CXX_FILE 
@@ -45,7 +45,7 @@ include_directories(${PROJECT_NAME}
         dependences 
         src/argorithm 
         src/handle_graphic
-        src/voltex
+        src/votex
         src/util
         ./)
 
