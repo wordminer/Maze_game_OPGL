@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
 
     glm::vec3 Camera_pos = { 1.0f, 0.25f, 1.0f };
-    Camera Main_view(Camera_pos, 45, 0.006, 0.1, 0.1f, 100.0f);
+    Camera Main_view(Camera_pos, 45, 0.06, 0.1, 0.1f, 300.0f);
     Main_view.set_viewrange(Shader_rec, WIDTH_WIN, HIGHT_WIN);
     screen.swap_mouse(WIDTH_WIN / 2, HIGHT_WIN / 2);
 
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
     //                                             {glm::ivec3(-15,0,-16),1},
     //                                             {glm::ivec3(-16,0,-15),1},};
     
-    Maze_map Maze = {30,30,glm::ivec3(1,0,1), glm::ivec3(16,0,5)};
+    Maze_map Maze = {50,50,glm::ivec3(1,0,1), glm::ivec3(49,0,48)};
     Maze.reneration_map_matrix();
     Map maze_map(Maze.Map);
 

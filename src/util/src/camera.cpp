@@ -45,17 +45,20 @@ void Camera::set_camera_pos(ShaderProgram Shader)
 
 void Camera::moving(float* Move) 
 {
-	Camera_pos = glm::vec3(Camera_pos.x + Forward_vector.x * Move[2] * speed_m, 
+	if (!Is_moving){return;}
+	float time_move = (std::clock() - this->time_norm) ;
+	Camera_pos = glm::vec3(Camera_pos.x + Forward_vector.x * Move[2] * speed_m *time_move, 
 						   Camera_pos.y, 
-						   Camera_pos.z + Forward_vector.z * Move[2] * speed_m);
+						   Camera_pos.z + Forward_vector.z * Move[2] * speed_m *time_move);
 	
-	Camera_pos = glm::vec3(Camera_pos.x + Side_vector.x * Move[0] * speed_m, 
+	Camera_pos = glm::vec3(Camera_pos.x + Side_vector.x * Move[0] * speed_m *time_move, 
 						   Camera_pos.y, 
-						   Camera_pos.z + Side_vector.z * Move[0] * speed_m);
+						   Camera_pos.z + Side_vector.z * Move[0] * speed_m *time_move);
 
 	Camera_pos = glm::vec3(Camera_pos.x, 
-						   Camera_pos.y + Move[1] * speed_m, 
+						   Camera_pos.y + Move[1] * speed_m *time_move, 
 						   Camera_pos.z);
+	this->time_norm = std::clock();
 }
 
 void Camera::rotate(int Rotate[], bool fixed_target)
@@ -131,6 +134,12 @@ void Camera::control_moving(){
 	if (key[SDL_SCANCODE_LSHIFT]){
 		move[1] = -0.1;
 	}
-	
+	if (Is_moving){if (move[0] == 0 && move[1] == 0 && move[2] == 0) Is_moving = false;}
+	else{
+	if (move[0] != 0 || move[1] != 0 || move[2] != 0){
+		Is_moving = true;
+		this->time_norm = std::clock();	
+	}}
+
 	moving(move);
 }

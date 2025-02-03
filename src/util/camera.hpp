@@ -8,6 +8,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <SDL.h>
+#include <ctime>
 
 #include "shader.hpp"
 #include "window_driver.hpp"
@@ -42,7 +43,7 @@ private:
 
 	bool Is_moving = false;
 	int time_present;
-	int time_norm;
+	std::time_t time_norm;
 };
 
 
