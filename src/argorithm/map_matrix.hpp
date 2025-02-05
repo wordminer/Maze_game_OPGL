@@ -18,6 +18,8 @@ struct Maze_map{
     glm::ivec3 end_point;
     
     std::unordered_map<glm::ivec3, int> Map;
+    std::vector<glm::ivec3> Pos_wait;
+    std::vector<glm::ivec3> Way_will_go;
     std::vector<glm::ivec3> Direct = {glm::ivec3(1,0,0), glm::ivec3(-1,0,0), glm::ivec3(0,0,-1), glm::ivec3(0,0,1)};
     std::vector<glm::ivec3> CrossDirect = {glm::ivec3(1,0,1), glm::ivec3(-1,0,1), glm::ivec3(1,0,-1), glm::ivec3(-1,0,-1)};
     
@@ -32,7 +34,7 @@ struct Maze_map{
     int take_maze_random(int Is_abs, glm::ivec3 pos);
 };
 
-
+int random_int_with_seed(glm::ivec3 pos, int range_random);
 float matrix_hight_from_pos(glm::ivec3 pos);
 float matrix_width_from_pos(glm::ivec3 pos);
 

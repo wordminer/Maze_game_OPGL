@@ -11,6 +11,18 @@ float matrix_width_from_pos(glm::ivec3 pos){
     return (sin_pos * (MAX_BLOCK_WIDTH - MIN_BLOCK_WIDTH) + MIN_BLOCK_WIDTH);
 }
 
+int random_int_with_seed(glm::ivec3 pos, int range_random){
+    int alpha = 10;
+    int beta = 6;
+    int zeta = 5;
+    int result = 0;
+    if (range_random != 0){
+        result = (pos.x*pos.x*pos.x*alpha + pos.y*pos.y*beta + pos.z*zeta)%range_random;
+    }
+    return result;
+}
+
+
 int Maze_map::take_maze_random(int Is_abs, glm::ivec3 pos){
     int alpha = 1;
     int beta = 5;
@@ -32,6 +44,7 @@ int Maze_map::Is_next_to_aVoid(glm::ivec3 pos, glm::ivec3 before_pos){
     for (auto direct:this->CrossDirect){
         glm::ivec3 direct_pos = pos + direct;
         if (this->Is_next_to_block(before_pos, direct_pos)){continue;}
+        if (direct_pos == this->end_point){return 1;}
         if (this->Map.find(direct_pos) == this->Map.end()){return 1;}
     }
     // std::cout<<pos.x <<" "<<pos.y <<" "<<pos.z <<" "<<std::endl;
@@ -75,24 +88,38 @@ void Maze_map::build_way(glm::ivec3 now_pos, glm::ivec3 before_pos){
         }
         if (Void_check == 0){
             way_go.insert(way_go.end(), direct);
-            //this->Map.erase(this->Map.find(new_pos));
+             //this->Map.erase(this->Map.find(new_pos));
             // build_way(new_pos, now_pos);
        }
     }
     std::vector<glm::ivec3> way_select = this->random_way(way_go, now_pos);
-    for (auto x:way_select){
-        glm::ivec3 new_pos = now_pos + x;
-        int Void_check = Is_next_to_aVoid(new_pos, now_pos);
+    for (auto way:way_select){
+        // std::cout << now_pos.x << " "<< now_pos.y << " "<< now_pos.z << " " <<std::endl;
+        // std::cout << way.x << " "<< way.y << " "<< way.z << " " <<std::endl;
+        int random_insert = random_int_with_seed(now_pos + way, this->Pos_wait.size());
+        this->Map.erase(this->Map.find(now_pos + way));
+        this->Pos_wait.insert(this->Pos_wait.begin() + random_insert,now_pos);
+        this->Way_will_go.insert(this->Way_will_go.begin() + random_insert,way);
+    }
+    for (int i = 0; i < this->Pos_wait.size(); i ++){
+        
+        glm::ivec3 build_pos = Pos_wait[0];
+        glm::ivec3 new_pos = Pos_wait[0] + Way_will_go[0];
+        this->Pos_wait.erase(this->Pos_wait.begin());
+        this->Way_will_go.erase(this->Way_will_go.begin());
+        
+        int Void_check = Is_next_to_aVoid(new_pos, build_pos);
         if (Void_check == 0){ 
-            this->Map.erase(this->Map.find(new_pos));
-            build_way(new_pos, now_pos);
+            //this->Map.erase(this->Map.find(new_pos));
+            build_way(new_pos, build_pos);
+            break;
         }
     }
 }
 
 std::vector<glm::ivec3> Maze_map::random_way(std::vector<glm::ivec3> way, glm::ivec3 pos){
     std::vector<glm::ivec3> way_random;
-    if (way.size() == 1){way_random = way;}
+    if (way.size() == 1 || way.size() == 4){way_random = way;}
     else if (way.size() == 2){
         int rd_way = this->take_maze_random(true, pos);
         way_random.insert(way_random.end(), way[rd_way]);
