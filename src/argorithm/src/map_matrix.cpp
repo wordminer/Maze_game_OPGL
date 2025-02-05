@@ -44,7 +44,7 @@ int Maze_map::Is_next_to_aVoid(glm::ivec3 pos, glm::ivec3 before_pos){
     for (auto direct:this->CrossDirect){
         glm::ivec3 direct_pos = pos + direct;
         if (this->Is_next_to_block(before_pos, direct_pos)){continue;}
-        if (direct_pos == this->end_point){return 1;}
+        if (direct_pos == this->end_point){return 0;}
         if (this->Map.find(direct_pos) == this->Map.end()){return 1;}
     }
     // std::cout<<pos.x <<" "<<pos.y <<" "<<pos.z <<" "<<std::endl;

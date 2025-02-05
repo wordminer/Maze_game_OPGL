@@ -26,6 +26,7 @@ struct Maze_map{
     bool Is_have_main_way = false;
 
     int Is_next_to_aVoid(glm::ivec3 pos, glm::ivec3 before_pos);
+    bool Is_out_of_map(glm::ivec3 pos);
     bool Is_next_to_block(glm::ivec3 pos_block, glm::ivec3 pos_check);
     std::vector<glm::ivec3> random_way(std::vector<glm::ivec3> way, glm::ivec3 pos);
 
