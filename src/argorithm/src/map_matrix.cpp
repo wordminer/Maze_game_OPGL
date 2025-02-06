@@ -33,12 +33,19 @@ int Maze_map::take_maze_random(int Is_abs, glm::ivec3 pos){
 }
 
 int Maze_map::Is_next_to_aVoid(glm::ivec3 pos, glm::ivec3 before_pos){
+    bool Is_next_to_tunnel = false;
+
     for (auto direct:this->Direct){
         glm::ivec3 direct_pos = pos + direct;
 
         if (direct_pos == before_pos){continue;}
         if (direct_pos == this->end_point){return -1;}
-        if (this->Map.find(direct_pos) == this->Map.end()){return 1;}
+        if (direct_pos.x < 0 || direct_pos.x >= this->width_map || direct_pos.z < 0 || direct_pos.z >= this->length_map){return 1;}
+        if (this->Map.find(direct_pos) == this->Map.end()) {
+            if ((direct_pos + before_pos)/2 == pos && random_int_with_seed(direct_pos, 5) == 0){
+            Is_next_to_tunnel = true;continue;}
+            return 1;
+        }         
     }
 
     for (auto direct:this->CrossDirect){
@@ -47,8 +54,10 @@ int Maze_map::Is_next_to_aVoid(glm::ivec3 pos, glm::ivec3 before_pos){
         if (direct_pos == this->end_point){return 0;}
         if (this->Map.find(direct_pos) == this->Map.end()){return 1;}
     }
+    if (Is_next_to_tunnel){return 2;}
+
     // std::cout<<pos.x <<" "<<pos.y <<" "<<pos.z <<" "<<std::endl;
-        
+    
     return 0;
 }
 
@@ -87,20 +96,19 @@ void Maze_map::build_way(glm::ivec3 now_pos, glm::ivec3 before_pos){
             return;
         }
         if (Void_check == 0){
-            way_go.insert(way_go.end(), direct);
              //this->Map.erase(this->Map.find(new_pos));
             // build_way(new_pos, now_pos);
-       }
+            int random_insert = random_int_with_seed(now_pos + direct, this->Pos_wait.size());
+            this->Map.erase(this->Map.find(now_pos + direct));
+            this->Pos_wait.insert(this->Pos_wait.begin() + random_insert,now_pos);
+            this->Way_will_go.insert(this->Way_will_go.begin() + random_insert,direct);
+        }   
+        if (Void_check == 2){
+            this->Map.erase(this->Map.find(now_pos + direct));
+        }
     }
-    std::vector<glm::ivec3> way_select = this->random_way(way_go, now_pos);
-    for (auto way:way_select){
-        // std::cout << now_pos.x << " "<< now_pos.y << " "<< now_pos.z << " " <<std::endl;
-        // std::cout << way.x << " "<< way.y << " "<< way.z << " " <<std::endl;
-        int random_insert = random_int_with_seed(now_pos + way, this->Pos_wait.size());
-        this->Map.erase(this->Map.find(now_pos + way));
-        this->Pos_wait.insert(this->Pos_wait.begin() + random_insert,now_pos);
-        this->Way_will_go.insert(this->Way_will_go.begin() + random_insert,way);
-    }
+    // std::vector<glm::ivec3> way_select = this->random_way(way_go, now_pos);
+    
     for (int i = 0; i < this->Pos_wait.size(); i ++){
         
         glm::ivec3 build_pos = Pos_wait[0];
