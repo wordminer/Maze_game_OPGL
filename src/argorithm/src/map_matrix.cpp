@@ -21,21 +21,31 @@ int Maze_map::take_maze_random(int Is_abs, glm::ivec3 pos){
 }
 
 int Maze_map::Is_next_to_aVoid(glm::ivec3 pos, glm::ivec3 before_pos){
+    bool Is_next_to_tunnel = false;
+
     for (auto direct:this->Direct){
         glm::ivec3 direct_pos = pos + direct;
 
         if (direct_pos == before_pos){continue;}
         if (direct_pos == this->end_point){return -1;}
-        if (this->Map.find(direct_pos) == this->Map.end()){return 1;}
+        if (direct_pos.x < 0 || direct_pos.x >= this->width_map || direct_pos.z < 0 || direct_pos.z >= this->length_map){return 1;}
+        if (this->Map.find(direct_pos) == this->Map.end()) {
+            if ((direct_pos + before_pos)/2 == pos){
+            Is_next_to_tunnel = true;continue;}
+            return 1;
+        }         
     }
 
     for (auto direct:this->CrossDirect){
         glm::ivec3 direct_pos = pos + direct;
         if (this->Is_next_to_block(before_pos, direct_pos)){continue;}
+        if (direct_pos == this->end_point){return 0;}
         if (this->Map.find(direct_pos) == this->Map.end()){return 1;}
     }
+    if (Is_next_to_tunnel){return 2;}
+
     // std::cout<<pos.x <<" "<<pos.y <<" "<<pos.z <<" "<<std::endl;
-        
+    
     return 0;
 }
 
@@ -57,7 +67,6 @@ void Maze_map::reneration_map_matrix(){
         }
     }
     build_way(start_point, start_point);
-
     // create way go
 }
 
@@ -87,12 +96,16 @@ void Maze_map::build_way(glm::ivec3 now_pos, glm::ivec3 before_pos){
             this->Map.erase(this->Map.find(new_pos));
             build_way(new_pos, now_pos);
         }
+        else if (Void_check == 2){
+            this->Map.erase(this->Map.find(new_pos));
+        }
     }
 }
 
 std::vector<glm::ivec3> Maze_map::random_way(std::vector<glm::ivec3> way, glm::ivec3 pos){
     std::vector<glm::ivec3> way_random;
     if (way.size() == 1){way_random = way;}
+    if (way.size() == 4){way_random = way;}
     else if (way.size() == 2){
         int rd_way = this->take_maze_random(true, pos);
         way_random.insert(way_random.end(), way[rd_way]);

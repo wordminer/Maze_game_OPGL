@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
 
     glm::vec3 Camera_pos = { 1.0f, 0.25f, 1.0f };
-    Camera Main_view(Camera_pos, 45, 0.01, 0.1, 0.1f, 300.0f);
+    Camera Main_view(Camera_pos, 45, 0.1, 0.1, 0.1f, 300.0f);
     Main_view.set_viewrange(Shader_rec, WIDTH_WIN, HIGHT_WIN);
     screen.swap_mouse(WIDTH_WIN / 2, HIGHT_WIN / 2);
 
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     float Angle_rotate[] = {0,0,0};
 
     
-    Maze_map Maze = {50,50,glm::ivec3(20,0,1), glm::ivec3(49,0,48)};
+    Maze_map Maze = {300,300,glm::ivec3(5,0,5), glm::ivec3(99,0,98)};
     Maze.reneration_map_matrix();
     Map maze_map(Maze.Map);
 
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
     while (running) {
         Main_view.control_mouse(screen, WIDTH_WIN, HIGHT_WIN);
         Main_view.control_moving();
-        maze_map.update_chunk(Main_view.Camera_pos, 3, data);
+        maze_map.update_chunk(Main_view.Camera_pos, 10, data);
 
 
         //Angle_rotate[1] += 0.1;

@@ -81,7 +81,7 @@ void main()
 
     
 
-    vec3 ourColor = (ambient + difuse)*intensity*attenuation ;
+    vec3 ourColor = (ambient + difuse) ;
 
     FragColor = vec4(ourColor, 1.0);
 }
